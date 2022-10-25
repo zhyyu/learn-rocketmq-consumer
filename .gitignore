@@ -36,3 +36,6 @@ mvnw
 mvnw.cmd
 /agent
 .DS_Store
+/agent1201
+/agent
+./logs

@@ -1,3 +1,4 @@
+/*
 package com.zhyyu.learn.rocketmq.consumer.config;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class ReceiveMsgConsumer implements CommandLineRunner {
@@ -20,7 +22,7 @@ public class ReceiveMsgConsumer implements CommandLineRunner {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name");
 
         // 设置NameServer的地址
-        consumer.setNamesrvAddr("192.168.100.3:9876");
+        consumer.setNamesrvAddr("localhost:9876");
 
         // 订阅一个或者多个Topic，以及Tag来过滤需要消费的消息
         consumer.subscribe("TopicTest", "*");
@@ -28,8 +30,11 @@ public class ReceiveMsgConsumer implements CommandLineRunner {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
-//                System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), new String(msgs.get(0).getBody(), StandardCharsets.UTF_8));
+                if (new Random().nextInt() % 3 == 0) {
+                    System.out.println("random exception occur");
+                    throw new RuntimeException("random exception");
+                }
                 // 标记该消息已经被成功消费
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
@@ -39,3 +44,4 @@ public class ReceiveMsgConsumer implements CommandLineRunner {
         System.out.printf("Consumer Started.%n");
     }
 }
+*/
